@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+.env/
+
+# Dados e logs sensíveis ou gerados
+*.log
+*.sqlite
+data/
+output/
+model_data/ # Se você salva modelos grandes localmente
+
+# IDEs e Editores
+.idea/             # JetBrains (PyCharm, IntelliJ)
+.vscode/           # VS Code (Configurações específicas de usuário)
+*~
+
+# Arquivos de Notebooks
+.ipynb_checkpoints/ # Checkpoints de Jupyter Notebooks
+
+# Arquivos de configuração de ambiente
+.env
