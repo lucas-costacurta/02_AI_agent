@@ -43,5 +43,3 @@ prompt = ChatPromptTemplate.from_messages(
     input_variables=["topic"],
     partial_variables={"format_instructions": parser.get_format_instructions()},
 )
-
-agent = ""
