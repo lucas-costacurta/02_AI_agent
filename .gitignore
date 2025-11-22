@@ -9,6 +9,7 @@ venv/
 .venv/
 env/
 .env/
+.env
 
 # Dados e logs sensíveis ou gerados
 *.log
@@ -24,6 +25,3 @@ model_data/ # Se você salva modelos grandes localmente
 
 # Arquivos de Notebooks
 .ipynb_checkpoints/ # Checkpoints de Jupyter Notebooks
-
-# Arquivos de configuração de ambiente
-.env
