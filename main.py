@@ -4,7 +4,7 @@ from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from langchain.agents import create_tool_calling_agent
+from langchain.agents import create_tool_calling_agent, AgentExecutor
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -39,7 +39,14 @@ prompt = ChatPromptTemplate.from_messages(
             "- tools_used: Lista de ferramentas utilizadas na pesquisa\n\n"
             "{format_instructions}",
         ),
+        ("placeholder", "{chat_history}"),
+        ("human", "{query}"),
+        ("placeholder", "{agent_scratchpad}"),
     ],
-    input_variables=["topic"],
-    partial_variables={"format_instructions": parser.get_format_instructions()},
+).partial(format_instructions=parser.get_format_instructions())
+
+agent = create_tool_calling_agent(
+    llm=llm_anthropic,
+    prompt=prompt,
+    tools=[],  # Adicione ferramentas específicas aqui se necessário
 )
