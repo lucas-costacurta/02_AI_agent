@@ -11,13 +11,6 @@ load_dotenv()  # Load environment variables from .env file
 llm_gpt = ChatOpenAI(model_name="gpt-4", temperature=0) # Initialize OpenAI LLM
 llm_anthropic = ChatAnthropic(model="claude-3-5-sonnet-20241022")  # Initialize Anthropic LLM
 
-""" if input("Qual LLM você quer usar? (1 para GPT-4, 2 para Claude): ") == "2":
-    response_anthropic = llm_anthropic.invoke(input("Faça sua pergunta para o Claude: "))
-    print("Resposta do Claude:", response_anthropic)
-else:
-    response_gpt = llm_gpt.invoke(input("Faça sua pergunta para o GPT-4: "))
-    print("Resposta do GPT-4:", response_gpt) """
-
 class ResearchResponse(BaseModel): 
     topic: str
     summary: str
@@ -50,3 +43,7 @@ agent = create_tool_calling_agent(
     prompt=prompt,
     tools=[],  # Adicione ferramentas específicas aqui se necessário
 )
+
+agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
+raw_response = agent_executor.invoke({"query": "Impacto das mudanças climáticas na biodiversidade global"})
+print("Resposta bruta do agente:", raw_response)
