@@ -1,15 +1,22 @@
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from langchain_openai import ChatOpenAI
-from langchain_anthropic import ChatAnthropic
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from langchain.agents import create_tool_calling_agent, AgentExecutor
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 
 load_dotenv()  # Load environment variables from .env file
 
-llm_gpt = ChatOpenAI(model_name="gpt-4", temperature=0) # Initialize OpenAI LLM
-llm_anthropic = ChatAnthropic(model="claude-3-5-sonnet-20241022")  # Initialize Anthropic LLM
+gemini_key = os.getenv("GEMINI_API_KEY")
+
+llm_gemini = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+)  # Initialize Gemini LLM
 
 class ResearchResponse(BaseModel): 
     topic: str
@@ -39,11 +46,11 @@ prompt = ChatPromptTemplate.from_messages(
 ).partial(format_instructions=parser.get_format_instructions())
 
 agent = create_tool_calling_agent(
-    llm=llm_anthropic,
+    llm=llm_gemini,
     prompt=prompt,
     tools=[],  # Adicione ferramentas específicas aqui se necessário
 )
 
 agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
-raw_response = agent_executor.invoke({"query": "Impacto das mudanças climáticas na biodiversidade global"})
-print("Resposta bruta do agente:", raw_response)
+raw_response = agent_executor.invoke({"query": input("O que deseja saber? ")})
+print(raw_response)
